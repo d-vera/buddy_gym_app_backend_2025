@@ -1,0 +1,502 @@
+{
+  "info": {
+    "name": "Fitness Studio API",
+    "description": "Complete API collection for Fitness Studio Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass123\",\n  \"username\": \"johndoe\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Muscles",
+      "item": [
+        {
+          "name": "List All Muscles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/muscles/",
+              "host": ["{{base_url}}"],
+              "path": ["muscles", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Muscle by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/muscles/1/",
+              "host": ["{{base_url}}"],
+              "path": ["muscles", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Exercises",
+      "item": [
+        {
+          "name": "List All Exercises",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exercises/",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Exercise",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"muscle\": 1,\n  \"name\": \"Bench Press\",\n  \"note\": \"Focus on form and controlled movements\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/exercises/",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Exercise by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exercises/1/",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Exercise",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"muscle\": 1,\n  \"name\": \"Bench Press\",\n  \"note\": \"Updated note: Focus on explosive movements\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/exercises/1/",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Delete Exercise",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exercises/1/",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Filter Exercises by Muscle",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exercises/?muscle=1",
+              "host": ["{{base_url}}"],
+              "path": ["exercises", ""],
+              "query": [
+                {
+                  "key": "muscle",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trainings",
+      "item": [
+        {
+          "name": "List All Trainings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Training",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exercise\": 1,\n  \"weight\": 80.5,\n  \"sets\": 4,\n  \"repetitions\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/trainings/",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Training by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/1/",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Training History - All",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/history/",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "history", ""]
+            }
+          }
+        },
+        {
+          "name": "Training History - Current Week",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/history/?period=current_week",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "history", ""],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "current_week"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Training History - Last Week",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/history/?period=last_week",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "history", ""],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "last_week"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Training History - Last Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/history/?period=last_month",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "history", ""],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "last_month"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Training History - Last Year",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/history/?period=last_year",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "history", ""],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "last_year"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Training Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/stats/",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "stats", ""]
+            }
+          }
+        },
+        {
+          "name": "Training Stats - By Exercise",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/stats/?exercise=1",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "stats", ""],
+              "query": [
+                {
+                  "key": "exercise",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Training Stats - By Muscle",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/trainings/stats/?muscle=1",
+              "host": ["{{base_url}}"],
+              "path": ["trainings", "stats", ""],
+              "query": [
+                {
+                  "key": "muscle",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

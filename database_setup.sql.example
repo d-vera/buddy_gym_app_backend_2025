@@ -1,0 +1,16 @@
+-- Fitness Studio Database Setup Script
+-- Run this script to create the database for the Fitness Studio API
+
+-- Create the database
+CREATE DATABASE IF NOT EXISTS fitness_studio_db 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
+-- Show success message
+SELECT 'Database fitness_studio_db created successfully!' AS Status;
+
+-- Use the database
+USE fitness_studio_db;
+
+-- Show current database
+SELECT DATABASE() AS 'Current Database';
