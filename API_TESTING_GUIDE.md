@@ -74,11 +74,20 @@ Expected: 400 Bad Request - "Password must be at least 8 characters long."
 
 **Endpoint**: `POST /api/auth/login/`
 
-**Request**:
+You can login with either **email** or **username (nickname)**.
+
+**Request (with email)**:
 ```bash
 curl -X POST http://localhost:8000/api/auth/login/ \
   -H "Content-Type: application/json" \
-  -d "{\"email\":\"test@example.com\",\"password\":\"TestPass123\"}"
+  -d "{\"email_or_username\":\"test@example.com\",\"password\":\"TestPass123\"}"
+```
+
+**Request (with username)**:
+```bash
+curl -X POST http://localhost:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d "{\"email_or_username\":\"testuser\",\"password\":\"TestPass123\"}"
 ```
 
 **Expected Response** (200 OK):
@@ -103,9 +112,9 @@ curl -X POST http://localhost:8000/api/auth/login/ \
 ```bash
 curl -X POST http://localhost:8000/api/auth/login/ \
   -H "Content-Type: application/json" \
-  -d "{\"email\":\"test@example.com\",\"password\":\"WrongPass\"}"
+  -d "{\"email_or_username\":\"test@example.com\",\"password\":\"WrongPass\"}"
 ```
-Expected: 401 Unauthorized - "Invalid email or password"
+Expected: 401 Unauthorized - "Invalid credentials. Please check your email/username and password."
 
 ### Step 3: Get User Profile
 

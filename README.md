@@ -189,11 +189,24 @@ curl -X POST http://localhost:8000/api/auth/register/ \
 
 ### 2. Login
 
+You can login with either **email** or **username (nickname)**:
+
+**Login with email:**
 ```bash
 curl -X POST http://localhost:8000/api/auth/login/ \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "john@example.com",
+    "email_or_username": "john@example.com",
+    "password": "SecurePass123"
+  }'
+```
+
+**Login with username:**
+```bash
+curl -X POST http://localhost:8000/api/auth/login/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email_or_username": "johndoe",
     "password": "SecurePass123"
   }'
 ```
@@ -208,7 +221,8 @@ Response:
     "username": "johndoe",
     "first_name": "John",
     "last_name": "Doe"
-  }
+  },
+  "message": "Login successful"
 }
 ```
 

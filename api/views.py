@@ -48,23 +48,53 @@ def register(request):
     responses={200: {
         'type': 'object',
         'properties': {
-            'token': {'type': 'string'},
-            'user': {'type': 'object'}
+            'token': {'type': 'string', 'description': 'JWT authentication token'},
+            'user': {'type': 'object', 'description': 'User profile information'},
+            'message': {'type': 'string', 'description': 'Success message'}
         }
     }},
-    description='Login with email and password to receive a JWT token'
+    description='Login with email or username (nickname) and password to receive a JWT token. You can use either your email address or your username to login.',
+    examples=[
+        OpenApiExample(
+            'Login with email',
+            value={
+                'email_or_username': 'user@example.com',
+                'password': 'SecurePass123'
+            },
+            request_only=True
+        ),
+        OpenApiExample(
+            'Login with username',
+            value={
+                'email_or_username': 'johndoe',
+                'password': 'SecurePass123'
+            },
+            request_only=True
+        )
+    ]
 )
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
-    """Login a user and return JWT token."""
+    """Login a user with email or username and return JWT token."""
     serializer = UserLoginSerializer(data=request.data)
     if serializer.is_valid():
-        email = serializer.validated_data['email']
+        email_or_username = serializer.validated_data['email_or_username']
         password = serializer.validated_data['password']
         
-        # Authenticate user
-        user = authenticate(request, username=email, password=password)
+        # Try to find user by email or username
+        user = None
+        try:
+            # Check if input is an email
+            if '@' in email_or_username:
+                user_obj = User.objects.get(email=email_or_username)
+            else:
+                user_obj = User.objects.get(username=email_or_username)
+            
+            # Authenticate with email (Django's USERNAME_FIELD)
+            user = authenticate(request, username=user_obj.email, password=password)
+        except User.DoesNotExist:
+            pass
         
         if user is not None:
             token = generate_jwt_token(user)
@@ -76,7 +106,7 @@ def login(request):
             }, status=status.HTTP_200_OK)
         else:
             return Response({
-                'error': 'Invalid email or password'
+                'error': 'Invalid credentials. Please check your email/username and password.'
             }, status=status.HTTP_401_UNAUTHORIZED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

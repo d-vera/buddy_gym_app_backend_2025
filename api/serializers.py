@@ -61,9 +61,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.Serializer):
-    """Serializer for user login."""
+    """Serializer for user login with email or username."""
     
-    email = serializers.EmailField(required=True)
+    email_or_username = serializers.CharField(
+        required=True,
+        help_text="Enter your email or username (nickname)"
+    )
     password = serializers.CharField(
         required=True,
         write_only=True,
