@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from django.db.models import Min, Max, Q
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 
@@ -219,7 +220,7 @@ class TrainingViewSet(viewsets.ModelViewSet):
         # Filter by time period
         period = request.query_params.get('period', None)
         if period:
-            now = datetime.now()
+            now = timezone.now()
             
             if period == 'current_week':
                 # Get current week (Monday to Sunday)
