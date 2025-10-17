@@ -296,7 +296,7 @@ class TrainingViewSet(viewsets.ModelViewSet):
         
         # Get unique exercises from the filtered trainings
         exercises = Exercise.objects.filter(
-            id__in=queryset.values_list('exercise_id', distinct=True)
+            id__in=queryset.values_list('exercise_id', flat=True).distinct()
         ).select_related('muscle')
         
         stats = []
